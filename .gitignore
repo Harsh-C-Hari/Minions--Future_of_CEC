@@ -1,0 +1,28 @@
+# Node
+node_modules/
+backend/node_modules/
+npm-debug.log*
+dist/
+build/
+
+# Env files (never commit real secrets)
+.env
+.env.local
+.env.*.local
+!*.env.example
+
+# Python (ai-service)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Prisma generated client (regenerated via `npm run prisma:generate`)
+backend/node_modules/.prisma/

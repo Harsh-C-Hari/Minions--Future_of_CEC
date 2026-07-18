@@ -1,0 +1,175 @@
+/* ============================================================
+   Content Normalize — restyles legacy Elementor/WP page content
+   to the CEC design system without touching page markup.
+   Loaded after design-system.css on every page.
+   ============================================================ */
+
+body{
+  font-family:var(--font-body) !important;
+  background:var(--paper-0) !important;
+  color:var(--ink-text) !important;
+}
+
+/* Legacy Elementor sections/containers: neutralize odd forced backgrounds,
+   let content breathe with our spacing scale */
+.elementor-section, .elementor-container, .elementor-column, .e-con{
+  max-width:100% !important;
+}
+.elementor-widget-container p{
+  color:var(--slate-600) !important;
+  line-height:1.7 !important;
+  max-width:75ch;
+}
+
+/* Headings */
+.elementor-heading-title, .entry-title, .page-title, h1, h2, h3, h4, h5{
+  font-family:var(--font-display) !important;
+  color:var(--ink-900) !important;
+  letter-spacing:-0.01em !important;
+}
+
+/* Body copy area gets readable measure + generous top spacing */
+.elementor-widget-wrap, .entry-content, .stm_content, .page-content{
+  padding-top:.5rem;
+}
+.entry-content, .page-content{
+  max-width:820px;
+  margin-inline:auto;
+  padding:2.5rem var(--gutter) 4rem;
+}
+
+/* Buttons */
+.elementor-button, .wpcf7-submit, .btn-default, button[type="submit"]{
+  font-family:var(--font-body) !important;
+  background:var(--brass-500) !important;
+  color:var(--ink-900) !important;
+  border:none !important;
+  border-radius:999px !important;
+  padding:.85em 1.6em !important;
+  font-weight:600 !important;
+  letter-spacing:.01em !important;
+  box-shadow:var(--shadow-sm) !important;
+  transition:transform .18s ease, background .18s ease, box-shadow .18s ease !important;
+}
+.elementor-button:hover, .wpcf7-submit:hover, button[type="submit"]:hover{
+  background:var(--brass-400) !important;
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-md) !important;
+}
+.elementor-button-text, .elementor-button-content-wrapper{color:inherit !important;}
+
+/* Links inside body copy */
+.entry-content a:not(.elementor-button):not(.btn),
+.page-content a:not(.elementor-button):not(.btn){
+  color:var(--ink-600) !important;
+  text-decoration:underline;
+  text-decoration-color:var(--brass-500);
+  text-underline-offset:3px;
+}
+
+/* Images */
+.entry-content img, .page-content img, .elementor-widget-image img, .wp-block-image img{
+  border-radius:var(--r-md) !important;
+  box-shadow:var(--shadow-sm);
+}
+
+/* Tables */
+table{
+  width:100% !important;
+  border-collapse:collapse !important;
+  font-size:var(--step--1) !important;
+  margin:1.75rem 0 !important;
+  border-radius:var(--r-md);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+table thead th, table tr:first-child th{
+  background:var(--ink-900) !important;
+  color:var(--white) !important;
+  text-align:left !important;
+  padding:.85rem 1rem !important;
+  font-weight:600 !important;
+  font-family:var(--font-mono) !important;
+  font-size:.78rem !important;
+  text-transform:uppercase !important;
+  letter-spacing:.05em !important;
+}
+table td, table th{
+  padding:.75rem 1rem !important;
+  border-bottom:1px solid var(--line) !important;
+}
+table tbody tr:nth-child(even){background:var(--paper-1) !important;}
+table tbody tr:hover{background:var(--brass-100) !important;}
+
+/* Forms (Contact Form 7 and friends) */
+.wpcf7-form, form.wpcf7-form{
+  max-width:640px; margin:2rem 0;
+  display:flex; flex-direction:column; gap:1.1rem;
+}
+.wpcf7-form p{margin:0 !important;}
+.wpcf7-form label{
+  display:block; font-weight:600; font-size:var(--step--1);
+  color:var(--ink-900); margin-bottom:.4rem;
+}
+.wpcf7-form input[type="text"],
+.wpcf7-form input[type="email"],
+.wpcf7-form input[type="tel"],
+.wpcf7-form input[type="number"],
+.wpcf7-form textarea,
+.wpcf7-form select{
+  width:100% !important;
+  font-family:var(--font-body) !important;
+  border:1px solid var(--line) !important;
+  border-radius:var(--r-sm) !important;
+  padding:.75em .9em !important;
+  font-size:var(--step-0) !important;
+  background:var(--white) !important;
+  color:var(--ink-text) !important;
+  transition:border-color .18s ease, box-shadow .18s ease !important;
+}
+.wpcf7-form input:focus, .wpcf7-form textarea:focus, .wpcf7-form select:focus{
+  outline:none !important;
+  border-color:var(--brass-500) !important;
+  box-shadow:0 0 0 3px var(--brass-100) !important;
+}
+.wpcf7-not-valid-tip{color:var(--rose-600) !important; font-size:.82rem !important; margin-top:.3rem !important;}
+.wpcf7-response-output{
+  border-radius:var(--r-sm) !important; border-color:var(--line) !important;
+  font-size:var(--step--1) !important;
+}
+
+/* Lists */
+.entry-content ul:not(.elementor-nav-menu):not(.mdrawer-sub),
+.page-content ul:not(.elementor-nav-menu){
+  padding-left:1.3rem !important;
+}
+.entry-content ul li, .page-content ul li{margin-bottom:.4rem; color:var(--slate-600);}
+
+/* Sidebar widgets (older post templates) */
+.widget{
+  background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+  padding:1.25rem; margin-bottom:1.5rem; box-shadow:var(--shadow-sm);
+}
+.widget_title, .widget-title{
+  font-family:var(--font-display) !important; color:var(--ink-900) !important;
+  font-size:1.05rem !important; margin-bottom:.75rem !important;
+}
+
+/* Meta rows (post date/author on news/blog templates) */
+.entry-meta, .post-meta{
+  font-family:var(--font-mono) !important; font-size:.76rem !important;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--slate-400) !important;
+}
+
+/* Pagination */
+.page-numbers{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:36px; height:36px; padding:0 .6rem; margin:.2rem;
+  border-radius:999px !important; border:1px solid var(--line) !important;
+  color:var(--ink-text) !important; background:var(--white) !important;
+  font-family:var(--font-mono) !important; font-size:.85rem !important;
+}
+.page-numbers.current{background:var(--ink-900) !important; color:var(--white) !important; border-color:var(--ink-900) !important;}
+
+/* Old top-bar leftovers from theme sometimes floating above header - hide safely */
+.stm-topbar, .top-bar{display:none !important;}

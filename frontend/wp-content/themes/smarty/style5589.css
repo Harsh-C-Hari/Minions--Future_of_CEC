@@ -1,0 +1,267 @@
+/*
+Theme Name: Smarty
+Theme URI: http://smartyschool.stylemixthemes.com/
+Author: StylemixThemes
+Author URI: http://stylemixthemes.com/
+Description: Smarty School WordPress theme has been specially designed with your learning community in mind. Perfect as a kindergarten, school, college or university WordPress theme, this contemporary and intuitive platform works for teachers, staff, parents and students at every level, engaging all parties in the life of your school or learning environment.
+Version: 3.4.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: blue, black, red, dark, one-column, two-columns, three-columns, four-columns, left-sidebar, right-sidebar, fixed-layout, fluid-layout, responsive-layout, flexible-header, custom-background, custom-colors, custom-header, custom-menu, editor-style, sticky-post, theme-options
+Text Domain: smarty
+*/
+
+@media only screen and (min-width: 1199px) {
+    body.site-layout_boxed .vc_row[data-vc-full-width] {
+        left: 50% !important;
+        padding-left: 60px !important;
+        padding-right: 60px !important;
+        margin-left: -615px !important;
+        width: 1230px !important;
+    }
+    body.site-layout_boxed .vc_row.vc_row-no-padding[data-vc-full-width] {
+        left: 50% !important;
+        padding-left: 17px !important;
+        padding-right: 17px !important;
+        margin-left: -615px !important;
+        width: 1230px !important;
+    }
+}
+
+.top-bar__language_kinder {
+    position: absolute;
+    left: -15px;
+}
+.top-bar__language_kinder ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.top-bar__language_kinder ul li {
+    list-style: none;
+    text-align: left;
+}
+.top-bar__language_kinder ul li a,
+.top-bar__language_kinder ul li span {
+    display: block;
+    padding: 8px 20px;
+    padding-left: 17px;
+    line-height: 20px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #ffffff;
+}
+.top-bar__language_kinder ul li span.active {
+    position: relative;
+    display: block;
+    line-height: 28px;
+    padding: 10px 40px 12px 42px;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+}
+.top-bar__language_kinder ul li span.active:before {
+    content: "\e952";
+    font-family: 'stm-icon';
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    font-weight: normal;
+    font-size: 16px;
+    margin: -14px 0 0;
+    color: #fd0;
+}
+.top-bar__language_kinder ul li span.active:after {
+    content: "\f107";
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    margin: -7px 0 0;
+}
+.top-bar__language_kinder ul li ul {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+    top: 100%;
+    min-width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    background: #56509f;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.top-bar__language_kinder ul li:hover {
+    background: #56509f;
+}
+.top-bar__language_kinder ul li:hover ul {
+    visibility: visible;
+    opacity: 1;
+}
+.top-bar__language_kinder ul li a:hover {
+    text-decoration: none;
+    background-color: #fd0;
+    color: #56509f;
+}
+
+.top-bar__language_kinder_mobile {
+    position: absolute;
+    left: 0;
+    z-index: 100;
+}
+.top-bar__language_kinder_mobile ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.top-bar__language_kinder_mobile ul li {
+    list-style: none;
+    text-align: left;
+}
+.top-bar__language_kinder_mobile ul li a,
+.top-bar__language_kinder_mobile ul li span {
+    display: block;
+    padding: 8px 20px;
+    padding-left: 17px;
+    line-height: 20px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #333333;
+}
+.top-bar__language_kinder_mobile ul li span.active {
+    position: relative;
+    display: block;
+    line-height: 28px;
+    padding: 15px 40px 15px 18px;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+}
+.top-bar__language_kinder_mobile ul li span.active:after {
+    content: "\f107";
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    margin: -7px 0 0;
+}
+.top-bar__language_kinder_mobile ul li ul {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    min-width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    background-color: #ffffff;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.top-bar__language_kinder_mobile ul li:hover ul {
+    visibility: visible;
+    opacity: 1;
+}
+.sidebar_type_blog .widget_nav_menu li .sub-menu {
+    margin-left: 18px;
+}
+h1, h2, h3, h4, h5 {
+    word-break: break-word;
+}
+.widget_pages ul.children {
+    margin-left: 18px;
+    margin-top: 16px;
+}
+.aligncenter {
+    text-align: center;
+}
+
+html:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    -webkit-transition: opacity 0.6s ease-in-out;
+    -moz-transition: opactiy 0.6s ease-in-out;
+    -ms-transition: opacity 0.6s ease-in-out;
+    -o-transition: opacity 0.6s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
+    visibility: hidden;
+    background: #ffffff;
+    z-index: 999999;
+}
+
+html#stm-site-preloader:after {
+    position: fixed;
+    content: '';
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    margin: -16px 0 0 -16px;
+    background: none;
+    background-color: #23393d;
+    border-radius: 50%;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-animation: scaleout 0.5s infinite ease-in-out;
+    animation: scaleout 1.0s infinite ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    z-index: 9999999; }
+
+html#stm-site-preloader:before,
+html#stm-site-preloader:after {
+    opacity: 1;
+    visibility: visible;
+}
+html#stm-site-preloader.stm-site-loaded:before,
+html#stm-site-preloader.stm-site-loaded:after {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media( max-width: 420px ) {
+    .form__content_buttons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .form__content_buttons> span {
+        margin: 10px -30px 30px 0;
+    }
+}
+
+@-webkit-keyframes scaleout {
+    0% {
+        -webkit-transform: scale(0); }
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 0; } }
+
+@keyframes scaleout {
+    0% {
+        transform: scale(0);
+        -webkit-transform: scale(0); }
+    100% {
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        opacity: 0; } }

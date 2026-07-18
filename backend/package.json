@@ -1,0 +1,45 @@
+{
+  "name": "smart-campus-backend",
+  "version": "1.0.0",
+  "description": "Backend API for the Smart Campus Student Platform",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "ai:install": "cd ai-service && pip install -r requirements.txt --break-system-packages",
+    "ai:dev": "cd ai-service && uvicorn app:app --reload --port 8000",
+    "dev:all": "concurrently -n API,AI -c blue,green \"npm:dev\" \"npm:ai:dev\"",
+    "prisma:generate": "prisma generate --schema=src/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=src/prisma/schema.prisma",
+    "prisma:deploy": "prisma migrate deploy --schema=src/prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema=src/prisma/schema.prisma"
+  },
+  "keywords": [
+    "smart-campus",
+    "express",
+    "prisma",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "google-auth-library": "^9.14.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.20.0"
+  }
+}

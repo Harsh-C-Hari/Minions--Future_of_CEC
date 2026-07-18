@@ -1,0 +1,51 @@
+// Prisma schema for the Smart Campus Student Platform.
+//
+// NOTE: Only the models required for the Authentication module are defined
+// here. Future modules (Student Profile, Lift Request, Lift Access,
+// Notifications) will extend this schema with additive changes — existing
+// models below will not need to be broken to support them.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model User {
+  id        String  @id @default(uuid())
+  email     String  @unique
+  name      String
+  googleId  String  @unique
+  avatarUrl String?
+  role      Role    @default(STUDENT)
+  isActive  Boolean @default(true)
+
+  refreshTokens RefreshToken[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}

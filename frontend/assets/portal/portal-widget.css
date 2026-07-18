@@ -1,0 +1,243 @@
+/* ============================================================
+   CEC Student Portal widget — self-contained styles.
+   Everything is scoped under #cec-portal-root / .cecp- prefix so it
+   cannot collide with any page's existing (WordPress theme) CSS.
+   ============================================================ */
+
+#cec-portal-root, #cec-portal-root * {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+#cec-portal-root {
+  --cecp-ink: #0B1730;
+  --cecp-brass: #B9862E;
+  --cecp-brass-dark: #9c6f24;
+  --cecp-paper: #FBF9F4;
+  --cecp-line: #DEDACB;
+  --cecp-danger: #9B3B3B;
+  --cecp-shadow: 0 12px 32px -8px rgba(11,23,48,.35);
+  position: fixed;
+  z-index: 2147483000;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* ---- Floating launcher button ---- */
+.cecp-launcher {
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  background: var(--cecp-ink);
+  color: #fff;
+  border: none;
+  box-shadow: var(--cecp-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s ease;
+}
+.cecp-launcher:hover { transform: translateY(-2px) scale(1.03); }
+.cecp-launcher svg { width: 26px; height: 26px; }
+.cecp-launcher .cecp-avatar {
+  width: 100%; height: 100%; border-radius: 999px; object-fit: cover;
+}
+.cecp-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  width: 12px; height: 12px;
+  background: var(--cecp-brass);
+  border: 2px solid #fff;
+  border-radius: 999px;
+}
+
+/* ---- Panel ---- */
+.cecp-panel {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  max-height: min(560px, 75vh);
+  background: var(--cecp-paper);
+  border: 1px solid var(--cecp-line);
+  border-radius: 16px;
+  box-shadow: var(--cecp-shadow);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.cecp-panel.is-open { display: flex; }
+
+.cecp-panel__header {
+  background: var(--cecp-ink);
+  color: #fff;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cecp-panel__title { font-weight: 700; font-size: 14.5px; letter-spacing: .2px; }
+.cecp-panel__sub { font-size: 11.5px; color: #B9C2DA; margin-top: 2px; }
+.cecp-close {
+  background: transparent; border: none; color: #fff; cursor: pointer;
+  opacity: .8; padding: 4px; line-height: 0;
+}
+.cecp-close:hover { opacity: 1; }
+
+.cecp-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- Login state ---- */
+.cecp-login-intro {
+  font-size: 13px;
+  color: #4B5468;
+  line-height: 1.5;
+}
+.cecp-gsi-mount { display: flex; justify-content: center; margin-top: 4px; }
+.cecp-error {
+  background: #FBEAEA;
+  color: var(--cecp-danger);
+  border: 1px solid #E9C6C6;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+}
+.cecp-hint {
+  font-size: 11.5px;
+  color: #8791A6;
+  text-align: center;
+}
+
+/* ---- Logged in / profile ---- */
+.cecp-profile {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px; border: 1px solid var(--cecp-line); border-radius: 10px; background: #fff;
+}
+.cecp-profile img { width: 36px; height: 36px; border-radius: 999px; }
+.cecp-profile__name { font-size: 13px; font-weight: 600; color: var(--cecp-ink); }
+.cecp-profile__email { font-size: 11.5px; color: #8791A6; }
+.cecp-logout {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--cecp-line);
+  border-radius: 8px;
+  font-size: 11.5px;
+  padding: 5px 8px;
+  cursor: pointer;
+  color: var(--cecp-ink);
+}
+.cecp-logout:hover { background: #F4F1E8; }
+
+/* ---- Chat ---- */
+.cecp-chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 220px;
+  gap: 8px;
+}
+.cecp-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 2px;
+}
+.cecp-msg {
+  max-width: 85%;
+  padding: 8px 11px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.cecp-msg.user {
+  align-self: flex-end;
+  background: var(--cecp-ink);
+  color: #fff;
+  border-bottom-right-radius: 3px;
+}
+.cecp-msg.assistant {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--cecp-line);
+  color: var(--cecp-ink);
+  border-bottom-left-radius: 3px;
+}
+.cecp-msg.system {
+  align-self: center;
+  background: transparent;
+  color: #8791A6;
+  font-size: 11.5px;
+}
+.cecp-typing { display: inline-flex; gap: 3px; align-items: center; }
+.cecp-typing span {
+  width: 5px; height: 5px; border-radius: 999px; background: #8791A6;
+  animation: cecp-bounce 1s infinite ease-in-out;
+}
+.cecp-typing span:nth-child(2) { animation-delay: .15s; }
+.cecp-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes cecp-bounce { 0%,80%,100% { transform: translateY(0); opacity:.5 } 40% { transform: translateY(-3px); opacity:1 } }
+
+.cecp-chat__form {
+  display: flex;
+  gap: 6px;
+  border-top: 1px solid var(--cecp-line);
+  padding-top: 10px;
+}
+.cecp-chat__input {
+  flex: 1;
+  border: 1px solid var(--cecp-line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+  resize: none;
+  max-height: 80px;
+  background: #fff;
+  color: var(--cecp-ink);
+}
+.cecp-chat__input:focus { outline: 2px solid var(--cecp-brass); outline-offset: 1px; }
+.cecp-chat__send {
+  background: var(--cecp-brass);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  width: 38px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.cecp-chat__send:disabled { opacity: .5; cursor: not-allowed; }
+.cecp-chat__send:hover:not(:disabled) { background: var(--cecp-brass-dark); }
+
+/* ---- Inline "page" mode (Student Portal page) ---- */
+#cec-portal-root.cecp-mode-page {
+  position: static;
+  inset: auto;
+  width: 100%;
+}
+.cecp-mode-page .cecp-launcher,
+.cecp-mode-page .cecp-badge { display: none; }
+.cecp-mode-page .cecp-panel {
+  position: static;
+  display: flex;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  max-height: none;
+  min-height: 520px;
+}
+
+@media (max-width: 480px) {
+  #cec-portal-root { right: 12px; bottom: 12px; }
+  .cecp-panel { width: calc(100vw - 24px); }
+}
