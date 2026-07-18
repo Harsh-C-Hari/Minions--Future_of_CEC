@@ -20,6 +20,10 @@ const envSchema = z.object({
 
   ALLOWED_EMAIL_DOMAIN: z.string().default('ceconline.edu'),
 
+  // Dev-only login override — see auth.service.js#loginWithGoogle. Only ever
+  // consulted when NODE_ENV === 'development'; ignored entirely otherwise.
+  DEV_ADMIN_EMAIL: z.string().email().optional(),
+
   CORS_ORIGIN: z.string().default('*'),
 
   // Base URL of the internal ai-service (FastAPI + Gemma/Ollama), mounted under
@@ -60,6 +64,11 @@ module.exports = {
   },
 
   allowedEmailDomain: env.ALLOWED_EMAIL_DOMAIN,
+
+  // Undefined in production/test even if the var is somehow set, callers
+  // must still gate on nodeEnv === 'development' themselves — this getter
+  // does not enforce that on its own.
+  devAdminEmail: env.DEV_ADMIN_EMAIL,
 
   // Split "http://a,http://b" into ['http://a','http://b'] so the cors
   // middleware can match against multiple allowed frontend origins.

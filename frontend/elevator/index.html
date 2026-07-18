@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Elevator Access — College of Engineering Chengannur</title>
+<meta name="description" content="Manage your elevator access — view status, generate PIN, and check enrollment." />
+<link rel="icon" type="image/png" href="../assets/img/CEC-logo.png" />
+<link rel="apple-touch-icon" href="../assets/img/CEC-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/design-system.css" />
+<link rel="stylesheet" href="../assets/css/lift-management.css" />
+<link rel="stylesheet" href="/assets/portal/portal-widget.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ================= UTILITY BAR ================= -->
+<div class="utility-bar">
+  <div class="utility-bar__row">
+    <ul class="utility-bar__links">
+      <li><a href="../student-portal/index.html">Student Portal</a></li>
+      <li><a href="index.html" aria-current="page">Elevator Access</a></li>
+      <li><a href="../downloads/index.html">Downloads</a></li>
+      <li><a href="../grievance-redressal/index.html">Grievance Redressal</a></li>
+    </ul>
+    <div class="utility-bar__contact">
+      <a href="mailto:principal@ceconline.edu">principal@ceconline.edu</a>
+      <span aria-hidden="true">·</span>
+      <a href="tel:+914792455125">+91-479-2455125</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HEADER / NAV ================= -->
+<header class="site-header">
+  <div class="nav-row">
+    <a href="../index.html" class="brand">
+      <img src="../assets/img/CEC-logo.png" alt="CEC crest" />
+      <span class="brand__text">
+        <span class="brand__name">College of Engineering<br>Chengannur</span>
+        <span class="brand__sub">Government of Kerala · IHRD · KTU affiliated</span>
+      </span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li>
+          <a href="../about/administration/index.html" aria-expanded="false">About <svg class="caret" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></a>
+          <div class="dropdown mega">
+            <div class="mega-col">
+              <div class="mega-col__title">Administration</div>
+              <a href="../about/administration/index.html">Administration</a>
+              <a href="../board-of-governors/index.html">Board of Governors</a>
+              <a href="../administrators/hari/index.html">Principal</a>
+            </div>
+            <div class="mega-col">
+              <div class="mega-col__title">Facilities</div>
+              <a href="../about/facilities/fab-lab/index.html">FAB Lab</a>
+              <a href="../about/facilities/library/index.html">Library</a>
+              <a href="../about/facilities/bus-service/index.html">Transportation</a>
+            </div>
+          </div>
+        </li>
+        <li>
+          <a href="../academics/departments/index.html" aria-expanded="false">Academics <svg class="caret" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></a>
+          <div class="dropdown">
+            <a href="../academics/departments/computer-engineering/index.html">Computer Engineering</a>
+            <a href="../academics/departments/electronics_engineering/index.html">Electronics Engineering</a>
+            <a href="../academics/departments/electrical_engineering/index.html">Electrical Engineering</a>
+          </div>
+        </li>
+        <li><a href="../placement/index.html">Placement</a></li>
+        <li><a href="../contact-us/index.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="../admission/btech_admissions/index.html" class="btn btn-brass btn-sm">Admissions 2026&#8209;27</a>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile drawer -->
+<div class="mobile-drawer__scrim"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="../admission/btech_admissions/index.html" class="btn btn-brass">Admissions 2026&#8209;27</a>
+  <div class="mdrawer-item"><a href="../index.html">Home</a></div>
+  <div class="mdrawer-item"><a href="../student-portal/index.html">Student Portal</a></div>
+  <div class="mdrawer-item"><a href="index.html">Elevator Access</a></div>
+  <div class="mdrawer-item"><a href="../contact-us/index.html">Contact Us</a></div>
+</div>
+
+
+<main id="main">
+
+  <!-- ================= PAGE HERO ================= -->
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <div class="page-hero__crumbs">
+        <a href="../index.html">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href="../student-portal/index.html">Student Portal</a>
+        <span aria-hidden="true">›</span>
+        <span>Elevator Access</span>
+      </div>
+      <h1>Elevator Access Dashboard</h1>
+    </div>
+  </section>
+
+  <!-- ================= SUB-NAV (injected by JS) ================= -->
+  <div id="lift-subnav-mount"></div>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section class="section">
+    <div class="container">
+      <!-- User info bar -->
+      <div id="user-bar" style="display:none;" class="lift-card" style="margin-bottom:1.5rem;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div id="user-avatar" style="width:40px;height:40px;border-radius:999px;background:var(--ink-900);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;"></div>
+          <div>
+            <div id="user-name" style="font-weight:600;font-size:var(--step--1);color:var(--ink-900);"></div>
+            <div id="user-email" style="font-size:.78rem;color:var(--slate-400);"></div>
+          </div>
+          <button onclick="CecApi.logout()" class="lift-btn--outline" style="margin-left:auto;">Sign out</button>
+        </div>
+      </div>
+
+      <div class="lift-dashboard" id="dashboard-content">
+        <div class="lift-loading">
+          <div class="lift-spinner"></div>
+          <p>Loading your lift access…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div>
+      <div class="footer-brand">
+        <img src="../assets/img/CEC-logo.png" alt="CEC crest" />
+        <strong>College of Engineering<br>Chengannur</strong>
+      </div>
+      <p style="color:rgba(255,255,255,.6); font-size:.9rem; max-width:32ch;">A Government of Kerala institution under IHRD, affiliated to APJ Abdul Kalam Technological University. Established 1993.</p>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <ul>
+        <li><a href="../about/administration/index.html">Administration</a></li>
+        <li><a href="../board-of-governors/index.html">Board of Governors</a></li>
+        <li><a href="../about/our-teachers/index.html">Our Teachers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Academics</h4>
+      <ul>
+        <li><a href="../academics/departments/index.html">Departments</a></li>
+        <li><a href="../b-tech/index.html">B.Tech</a></li>
+        <li><a href="../mca/index.html">MCA</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../placement/index.html">Placement</a></li>
+        <li><a href="../downloads/index.html">Downloads</a></li>
+        <li><a href="../contact-us/index.html">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 College of Engineering Chengannur. All rights reserved.</span>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="../assets/js/main.js"></script>
+<script src="/assets/portal/portal-config.js"></script>
+<script src="/assets/portal/portal-api.js"></script>
+<script src="/assets/portal/portal-widget.js" defer></script>
+<script src="../assets/js/lift-management.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  if (!CecApi.requireAuth()) return;
+
+  /* ---- Sub-nav ---- */
+  var navItems = [
+    { label: "Dashboard", href: "/elevator/" },
+    { label: "New Request", href: "/elevator/request.html" },
+    { label: "My Requests", href: "/elevator/requests.html" },
+    { label: "Notifications", href: "/elevator/notifications.html" },
+  ];
+  if (CecApi.isAdmin()) {
+    navItems.push({ label: "Admin Dashboard", href: "/elevator/admin/" });
+  }
+  LiftUI.renderSubNav(document.getElementById("lift-subnav-mount"), navItems);
+
+  /* ---- User bar ---- */
+  var user = CecApi.getUser();
+  if (user) {
+    document.getElementById("user-bar").style.display = "block";
+    document.getElementById("user-name").textContent = user.name;
+    document.getElementById("user-email").textContent = user.email;
+    var avatarEl = document.getElementById("user-avatar");
+    if (user.avatarUrl) {
+      avatarEl.innerHTML = '<img src="' + LiftUI.escapeHtml(user.avatarUrl) + '" alt="" style="width:100%;height:100%;border-radius:999px;object-fit:cover;">';
+    } else {
+      avatarEl.textContent = (user.name || "?").charAt(0).toUpperCase();
+    }
+  }
+
+  /* ---- Load dashboard data ---- */
+  var dashboard = document.getElementById("dashboard-content");
+  var liftAccess = null;
+  var pinData = null;
+  var recentRequests = [];
+  var unreadCount = 0;
+
+  // Fetch all data in parallel
+  Promise.all([
+    CecApi.apiFetch("/lift-access/me").then(function (r) { liftAccess = r.data; }).catch(function () {}),
+    CecApi.apiFetch("/lift-access/me/pin").then(function (r) { pinData = r.data; }).catch(function () {}),
+    CecApi.apiFetch("/lift-requests/me").then(function (r) { recentRequests = (r.data || []).slice(0, 5); }).catch(function () {}),
+    CecApi.apiFetch("/notifications").then(function (r) {
+      var notifs = r.data || [];
+      unreadCount = notifs.filter(function (n) { return !n.read; }).length;
+    }).catch(function () {}),
+  ]).then(renderDashboard);
+
+  var countdownCancel = null;
+
+  function renderDashboard() {
+    var html = "";
+
+    /* ---- Lift Access Status Card ---- */
+    html += '<div class="lift-card">';
+    html += '<div class="lift-card__header">';
+    html += '<h3 class="lift-card__title">Lift Access Status</h3>';
+    html += '<div class="lift-card__icon lift-card__icon--brass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="1" width="7" height="22" rx="2"/><rect x="14" y="1" width="7" height="22" rx="2"/><path d="M6.5 7v4M6.5 15v2M17.5 5v2M17.5 11v6"/></svg></div>';
+    html += '</div>';
+
+    if (liftAccess) {
+      html += '<div class="lift-card__row"><span class="lift-card__label">Status</span>' + LiftUI.badge(liftAccess.status) + '</div>';
+      html += '<div class="lift-card__row"><span class="lift-card__label">Activated</span><span class="lift-card__value">' + LiftUI.formatDate(liftAccess.activatedAt) + '</span></div>';
+      html += '<div class="lift-card__row"><span class="lift-card__label">Expires</span><span class="lift-card__value">' + LiftUI.formatDate(liftAccess.expiresAt) + '</span></div>';
+
+      // Enrollment
+      var enrolled = liftAccess.enrollment && liftAccess.enrollment.enrolled;
+      html += '<div class="lift-card__row"><span class="lift-card__label">Fingerprint</span>';
+      if (enrolled) {
+        html += '<span class="lift-enrollment lift-enrollment--enrolled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Enrolled</span>';
+      } else if (liftAccess.status === "ACTIVE") {
+        html += '<span class="lift-enrollment lift-enrollment--pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Pending</span>';
+      } else {
+        html += '<span class="lift-enrollment lift-enrollment--none">Not available</span>';
+      }
+      html += '</div>';
+
+      // Enroll button for active, unenrolled users
+      if (liftAccess.status === "ACTIVE" && !enrolled) {
+        html += '<div style="margin-top:.75rem;"><button class="btn btn-brass btn-sm" id="btn-enroll">Enroll Fingerprint</button></div>';
+      }
+    } else {
+      html += '<div class="lift-empty" style="padding:1.5rem 0;"><p>No lift access found. Submit a request to get started.</p></div>';
+      html += '<a href="/elevator/request.html" class="btn btn-brass btn-sm" style="margin-top:.5rem;">Request Lift Access</a>';
+    }
+    html += '</div>';
+
+    /* ---- PIN Card ---- */
+    html += '<div class="lift-card">';
+    html += '<div class="lift-card__header">';
+    html += '<h3 class="lift-card__title">Active PIN</h3>';
+    html += '<div class="lift-card__icon lift-card__icon--moss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>';
+    html += '</div>';
+
+    if (pinData && pinData.pin && pinData.status === "ACTIVE") {
+      html += '<div class="pin-display">';
+      html += '<div class="pin-display__code" id="pin-code">' + LiftUI.escapeHtml(pinData.pin) + '</div>';
+      html += '<div class="pin-display__countdown" id="pin-countdown"></div>';
+      html += '<div class="pin-display__label">Expires at ' + LiftUI.formatDateTime(pinData.expiresAt) + '</div>';
+      html += '</div>';
+    } else if (liftAccess && liftAccess.status === "ACTIVE") {
+      html += '<div class="lift-empty" style="padding:1.5rem 0;"><p>No active PIN. Generate one to use the elevator.</p></div>';
+      html += '<button class="btn btn-brass btn-sm" id="btn-generate-pin">Generate PIN</button>';
+    } else {
+      html += '<div class="lift-empty" style="padding:1.5rem 0;"><p>PIN generation requires active lift access.</p></div>';
+    }
+    html += '</div>';
+
+    /* ---- Recent Requests Card ---- */
+    html += '<div class="lift-card">';
+    html += '<div class="lift-card__header">';
+    html += '<h3 class="lift-card__title">Recent Requests</h3>';
+    html += '<a href="/elevator/requests.html" class="lift-btn--outline" style="font-size:.76rem;">View All</a>';
+    html += '</div>';
+
+    if (recentRequests.length) {
+      recentRequests.forEach(function (req) {
+        html += '<div class="lift-card__row">';
+        html += '<span class="lift-card__label" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + LiftUI.escapeHtml(req.reason) + '</span>';
+        html += '<span style="display:flex;align-items:center;gap:.5rem;">' + LiftUI.badge(req.status) + '<span class="lift-card__label">' + LiftUI.formatDate(req.createdAt) + '</span></span>';
+        html += '</div>';
+      });
+    } else {
+      html += '<div class="lift-empty" style="padding:1rem 0;"><p>No requests yet.</p></div>';
+    }
+    html += '</div>';
+
+    /* ---- Notifications Card ---- */
+    html += '<div class="lift-card">';
+    html += '<div class="lift-card__header">';
+    html += '<h3 class="lift-card__title">Notifications</h3>';
+    if (unreadCount > 0) {
+      html += '<span class="lift-notif-count">' + unreadCount + '</span>';
+    }
+    html += '</div>';
+    html += '<a href="/elevator/notifications.html" class="lift-btn--outline" style="font-size:.78rem;width:100%;text-align:center;display:block;padding:.65em 0;">View Notifications' + (unreadCount > 0 ? ' (' + unreadCount + ' unread)' : '') + '</a>';
+    html += '</div>';
+
+    dashboard.innerHTML = html;
+
+    /* ---- PIN countdown ---- */
+    if (pinData && pinData.pin && pinData.status === "ACTIVE") {
+      var countdownEl = document.getElementById("pin-countdown");
+      if (countdownEl) {
+        countdownCancel = LiftUI.startCountdown(pinData.expiresAt, countdownEl, function () {
+          // Re-fetch on expiry
+          pinData = null;
+          renderDashboard();
+        });
+      }
+    }
+
+    /* ---- Generate PIN button ---- */
+    var genPinBtn = document.getElementById("btn-generate-pin");
+    if (genPinBtn) {
+      genPinBtn.addEventListener("click", function () {
+        genPinBtn.disabled = true;
+        genPinBtn.textContent = "Generating…";
+        CecApi.apiFetch("/lift-access/me/pin", { method: "POST" })
+          .then(function (r) {
+            pinData = r.data;
+            LiftUI.showToast("PIN generated successfully!", "success");
+            if (countdownCancel) countdownCancel();
+            renderDashboard();
+          })
+          .catch(function (err) {
+            LiftUI.handleApiError(err);
+            genPinBtn.disabled = false;
+            genPinBtn.textContent = "Generate PIN";
+          });
+      });
+    }
+
+    /* ---- Enroll button ---- */
+    var enrollBtn = document.getElementById("btn-enroll");
+    if (enrollBtn) {
+      enrollBtn.addEventListener("click", function () {
+        enrollBtn.disabled = true;
+        enrollBtn.textContent = "Enrolling…";
+        CecApi.apiFetch("/lift-access/me/fingerprint-enrollment", {
+          method: "POST",
+          body: JSON.stringify({}),
+        })
+          .then(function (r) {
+            LiftUI.showToast("Fingerprint enrollment initiated!", "success");
+            // Refresh access data
+            CecApi.apiFetch("/lift-access/me").then(function (res) {
+              liftAccess = res.data;
+              renderDashboard();
+            });
+          })
+          .catch(function (err) {
+            LiftUI.handleApiError(err);
+            enrollBtn.disabled = false;
+            enrollBtn.textContent = "Enroll Fingerprint";
+          });
+      });
+    }
+  }
+})();
+</script>
+</body>
+</html>

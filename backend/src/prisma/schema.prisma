@@ -31,6 +31,14 @@ model User {
 
   refreshTokens RefreshToken[]
 
+  // --- Lift management (additive; does not affect existing auth queries) ---
+  liftRequests           LiftRequest[]           @relation("LiftRequestStudent")
+  reviewedLiftRequests   LiftRequest[]            @relation("LiftRequestReviewer")
+  liftAccesses           LiftAccess[]             @relation("LiftAccessStudent")
+  revokedLiftAccesses    LiftAccess[]             @relation("LiftAccessRevoker")
+  fingerprintEnrollments FingerprintEnrollment[]
+  notifications          Notification[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -48,4 +56,170 @@ model RefreshToken {
 
   @@index([userId])
   @@map("refresh_tokens")
+}
+
+// =====================================================================
+// Automated Lift Management System
+//
+// Purely additive: no existing model, field, or relation above this line
+// is modified. Statuses use enums (not free-text strings) so invalid
+// states are impossible at the database layer. Expiry is timestamp-driven
+// (LiftPin.expiresAt / LiftAccess.expiresAt) and evaluated lazily by the
+// service layer on read/write — there is no background job or DB-level
+// scheduler here, by design (see expiryScheduler in Phase 3).
+// =====================================================================
+
+enum LiftRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum LiftAccessStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+
+enum LiftPinStatus {
+  ACTIVE
+  EXPIRED
+  USED
+}
+
+// Distinguishes which upload subdirectory a supporting file belongs in
+// (see LiftRequest.documentPath) — keeps medical certificates and general
+// supporting documents physically separated on disk.
+enum LiftDocumentType {
+  MEDICAL
+  SUPPORTING
+}
+
+enum NotificationType {
+  REQUEST_SUBMITTED
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  PIN_GENERATED
+  FINGERPRINT_ENROLLED
+  LIFT_EXPIRED
+  LIFT_REVOKED
+}
+
+model LiftRequest {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation("LiftRequestStudent", fields: [userId], references: [id], onDelete: Cascade)
+
+  reason           String
+  medicalCondition String?
+
+  // Path is relative to the uploads root, e.g. "medical/<uuid>.pdf" or
+  // "documents/<uuid>.pdf" — documentType determines which subdirectory
+  // the file was written to at upload time.
+  documentType LiftDocumentType?
+  documentPath String?
+
+  status  LiftRequestStatus @default(PENDING)
+  remarks String?
+
+  reviewedById String?
+  reviewedBy   User?     @relation("LiftRequestReviewer", fields: [reviewedById], references: [id])
+  reviewedAt   DateTime?
+
+  liftAccess LiftAccess?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("lift_requests")
+}
+
+model LiftAccess {
+  id String @id @default(uuid())
+
+  liftRequestId String      @unique
+  liftRequest   LiftRequest @relation(fields: [liftRequestId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("LiftAccessStudent", fields: [userId], references: [id], onDelete: Cascade)
+
+  status LiftAccessStatus @default(ACTIVE)
+
+  activatedAt DateTime?
+  expiresAt   DateTime?
+
+  revokedAt    DateTime?
+  revokedById  String?
+  revokedBy    User?     @relation("LiftAccessRevoker", fields: [revokedById], references: [id])
+
+  pins                  LiftPin[]
+  fingerprintEnrollment FingerprintEnrollment?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("lift_access")
+}
+
+model LiftPin {
+  id String @id @default(uuid())
+
+  liftAccessId String
+  liftAccess   LiftAccess @relation(fields: [liftAccessId], references: [id], onDelete: Cascade)
+
+  pin String // 4-digit code; short-lived (5 min) and single-use by design
+
+  status      LiftPinStatus @default(ACTIVE)
+  generatedAt DateTime      @default(now())
+  expiresAt   DateTime
+  usedAt      DateTime?
+
+  @@index([liftAccessId])
+  @@index([status])
+  @@map("lift_pins")
+}
+
+// Enrollment metadata only. The backend intentionally never stores
+// fingerprint images or biometric templates — those remain on the
+// scanner/device. This table is a success/failure + timestamp record.
+model FingerprintEnrollment {
+  id String @id @default(uuid())
+
+  liftAccessId String     @unique
+  liftAccess   LiftAccess @relation(fields: [liftAccessId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  enrolled   Boolean   @default(false)
+  enrolledAt DateTime?
+  deviceId   String?
+
+  @@index([userId])
+  @@map("fingerprint_enrollments")
+}
+
+model Notification {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type    NotificationType
+  title   String
+  message String
+  read    Boolean          @default(false)
+
+  relatedLiftRequestId String?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@map("notifications")
 }

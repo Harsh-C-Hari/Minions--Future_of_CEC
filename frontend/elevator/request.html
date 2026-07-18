@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Request Elevator Access — College of Engineering Chengannur</title>
+<meta name="description" content="Submit a lift access request with supporting documentation." />
+<link rel="icon" type="image/png" href="../assets/img/CEC-logo.png" />
+<link rel="apple-touch-icon" href="../assets/img/CEC-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/design-system.css" />
+<link rel="stylesheet" href="../assets/css/lift-management.css" />
+<link rel="stylesheet" href="/assets/portal/portal-widget.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ================= UTILITY BAR ================= -->
+<div class="utility-bar">
+  <div class="utility-bar__row">
+    <ul class="utility-bar__links">
+      <li><a href="../student-portal/index.html">Student Portal</a></li>
+      <li><a href="index.html">Elevator Access</a></li>
+      <li><a href="../downloads/index.html">Downloads</a></li>
+      <li><a href="../grievance-redressal/index.html">Grievance Redressal</a></li>
+    </ul>
+    <div class="utility-bar__contact">
+      <a href="mailto:principal@ceconline.edu">principal@ceconline.edu</a>
+      <span aria-hidden="true">·</span>
+      <a href="tel:+914792455125">+91-479-2455125</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HEADER / NAV ================= -->
+<header class="site-header">
+  <div class="nav-row">
+    <a href="../index.html" class="brand">
+      <img src="../assets/img/CEC-logo.png" alt="CEC crest" />
+      <span class="brand__text">
+        <span class="brand__name">College of Engineering<br>Chengannur</span>
+        <span class="brand__sub">Government of Kerala · IHRD · KTU affiliated</span>
+      </span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../placement/index.html">Placement</a></li>
+        <li><a href="../contact-us/index.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../admission/btech_admissions/index.html" class="btn btn-brass btn-sm">Admissions 2026&#8209;27</a>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile drawer -->
+<div class="mobile-drawer__scrim"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="../admission/btech_admissions/index.html" class="btn btn-brass">Admissions 2026&#8209;27</a>
+  <div class="mdrawer-item"><a href="../index.html">Home</a></div>
+  <div class="mdrawer-item"><a href="../student-portal/index.html">Student Portal</a></div>
+  <div class="mdrawer-item"><a href="index.html">Elevator Access</a></div>
+  <div class="mdrawer-item"><a href="../contact-us/index.html">Contact Us</a></div>
+</div>
+
+<main id="main">
+
+  <!-- ================= PAGE HERO ================= -->
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <div class="page-hero__crumbs">
+        <a href="../index.html">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href="index.html">Elevator Access</a>
+        <span aria-hidden="true">›</span>
+        <span>New Request</span>
+      </div>
+      <h1>Request Elevator Access</h1>
+    </div>
+  </section>
+
+  <!-- ================= SUB-NAV ================= -->
+  <div id="lift-subnav-mount"></div>
+
+  <!-- ================= FORM ================= -->
+  <section class="section">
+    <div class="container">
+      <div class="lift-detail" style="max-width:680px;">
+        <div class="lift-detail__header">
+          <h2 class="lift-detail__title">Submit Request</h2>
+        </div>
+
+        <form id="lift-request-form" class="lift-form" novalidate>
+          <!-- Reason -->
+          <div class="lift-form__group">
+            <label class="lift-form__label" for="field-reason">Reason for lift access <span style="color:var(--rose-600);">*</span></label>
+            <textarea class="lift-form__textarea" id="field-reason" name="reason" rows="4" placeholder="Explain why you need elevator access…" required maxlength="1000"></textarea>
+            <span class="lift-form__error" id="err-reason">Reason is required.</span>
+          </div>
+
+          <!-- Medical condition -->
+          <div class="lift-form__group">
+            <label class="lift-form__label" for="field-medical">Medical condition <span style="color:var(--slate-400);font-weight:400;">(optional)</span></label>
+            <textarea class="lift-form__textarea" id="field-medical" name="medicalCondition" rows="3" placeholder="Describe any relevant medical condition…" maxlength="1000"></textarea>
+          </div>
+
+          <!-- File upload -->
+          <div class="lift-form__group">
+            <label class="lift-form__label">Supporting document <span style="color:var(--slate-400);font-weight:400;">(optional)</span></label>
+            <div class="lift-form__file-zone" id="file-zone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 2v6h6"/>
+                <path d="M12 18v-6"/>
+                <path d="M9 15l3-3 3 3"/>
+              </svg>
+              <p>Click or drag a file here to upload</p>
+              <small>PDF, JPEG, or PNG · Max 5 MB</small>
+              <input type="file" id="field-document" name="document" accept=".pdf,.jpg,.jpeg,.png" />
+            </div>
+            <div class="lift-form__file-name" id="file-name-display">
+              <span id="file-name-text"></span>
+              <button type="button" class="lift-form__file-remove" id="btn-remove-file" aria-label="Remove file">✕</button>
+            </div>
+          </div>
+
+          <!-- Document type -->
+          <div class="lift-form__group" id="doc-type-group" style="display:none;">
+            <label class="lift-form__label" for="field-doc-type">Document type <span style="color:var(--rose-600);">*</span></label>
+            <select class="lift-form__select" id="field-doc-type" name="documentType">
+              <option value="">Select document type…</option>
+              <option value="MEDICAL">Medical Certificate</option>
+              <option value="SUPPORTING">Supporting Document</option>
+            </select>
+            <span class="lift-form__error" id="err-doc-type">Please select a document type when uploading a file.</span>
+          </div>
+
+          <!-- Submit -->
+          <div style="display:flex;gap:.75rem;align-items:center;margin-top:.5rem;">
+            <button type="submit" class="btn btn-brass" id="btn-submit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
+              Submit Request
+            </button>
+            <a href="requests.html" class="lift-btn--outline">Cancel</a>
+          </div>
+
+          <!-- Global error -->
+          <div class="cecp-error" id="form-global-error" style="display:none;"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div>
+      <div class="footer-brand">
+        <img src="../assets/img/CEC-logo.png" alt="CEC crest" />
+        <strong>College of Engineering<br>Chengannur</strong>
+      </div>
+      <p style="color:rgba(255,255,255,.6); font-size:.9rem; max-width:32ch;">A Government of Kerala institution under IHRD, affiliated to APJ Abdul Kalam Technological University. Established 1993.</p>
+    </div>
+    <div class="footer-col"><h4>About</h4><ul><li><a href="../about/administration/index.html">Administration</a></li></ul></div>
+    <div class="footer-col"><h4>Academics</h4><ul><li><a href="../academics/departments/index.html">Departments</a></li></ul></div>
+    <div class="footer-col"><h4>Resources</h4><ul><li><a href="../contact-us/index.html">Contact Us</a></li></ul></div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 College of Engineering Chengannur. All rights reserved.</span>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="../assets/js/main.js"></script>
+<script src="/assets/portal/portal-config.js"></script>
+<script src="/assets/portal/portal-api.js"></script>
+<script src="/assets/portal/portal-widget.js" defer></script>
+<script src="../assets/js/lift-management.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  if (!CecApi.requireAuth()) return;
+
+  /* ---- Sub-nav ---- */
+  var navItems = [
+    { label: "Dashboard", href: "/elevator/" },
+    { label: "New Request", href: "/elevator/request.html" },
+    { label: "My Requests", href: "/elevator/requests.html" },
+    { label: "Notifications", href: "/elevator/notifications.html" },
+  ];
+  if (CecApi.isAdmin()) {
+    navItems.push({ label: "Admin Dashboard", href: "/elevator/admin/" });
+  }
+  LiftUI.renderSubNav(document.getElementById("lift-subnav-mount"), navItems);
+
+  /* ---- DOM refs ---- */
+  var form = document.getElementById("lift-request-form");
+  var reasonField = document.getElementById("field-reason");
+  var medicalField = document.getElementById("field-medical");
+  var fileInput = document.getElementById("field-document");
+  var fileZone = document.getElementById("file-zone");
+  var fileNameDisplay = document.getElementById("file-name-display");
+  var fileNameText = document.getElementById("file-name-text");
+  var removeFileBtn = document.getElementById("btn-remove-file");
+  var docTypeGroup = document.getElementById("doc-type-group");
+  var docTypeField = document.getElementById("field-doc-type");
+  var submitBtn = document.getElementById("btn-submit");
+  var globalError = document.getElementById("form-global-error");
+  var errReason = document.getElementById("err-reason");
+  var errDocType = document.getElementById("err-doc-type");
+
+  /* ---- File zone interaction ---- */
+  fileZone.addEventListener("click", function () { fileInput.click(); });
+
+  fileZone.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    fileZone.style.borderColor = "var(--brass-500)";
+    fileZone.style.background = "var(--brass-100)";
+  });
+  fileZone.addEventListener("dragleave", function () {
+    fileZone.style.borderColor = "";
+    fileZone.style.background = "";
+  });
+  fileZone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    fileZone.style.borderColor = "";
+    fileZone.style.background = "";
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      handleFileSelected();
+    }
+  });
+
+  fileInput.addEventListener("change", handleFileSelected);
+
+  function handleFileSelected() {
+    var file = fileInput.files[0];
+    if (file) {
+      // Validate file size (5 MB)
+      if (file.size > 5 * 1024 * 1024) {
+        showError(globalError, "File size must not exceed 5 MB.");
+        fileInput.value = "";
+        return;
+      }
+      // Validate file type
+      var validTypes = ["application/pdf", "image/jpeg", "image/png"];
+      if (validTypes.indexOf(file.type) === -1) {
+        showError(globalError, "Only PDF, JPEG, or PNG files are allowed.");
+        fileInput.value = "";
+        return;
+      }
+      fileNameText.textContent = file.name;
+      fileNameDisplay.classList.add("is-visible");
+      fileZone.style.display = "none";
+      docTypeGroup.style.display = "flex";
+      hideError(globalError);
+    }
+  }
+
+  removeFileBtn.addEventListener("click", function () {
+    fileInput.value = "";
+    fileNameDisplay.classList.remove("is-visible");
+    fileZone.style.display = "";
+    docTypeGroup.style.display = "none";
+    docTypeField.value = "";
+    hideError(errDocType);
+  });
+
+  /* ---- Validation ---- */
+  function showError(el, msg) {
+    if (msg) el.textContent = msg;
+    el.classList.add("is-visible");
+    if (el.id === "form-global-error") el.style.display = "block";
+  }
+  function hideError(el) {
+    el.classList.remove("is-visible");
+    if (el.id === "form-global-error") el.style.display = "none";
+  }
+
+  function validate() {
+    var valid = true;
+    hideError(errReason);
+    hideError(errDocType);
+    hideError(globalError);
+
+    if (!reasonField.value.trim()) {
+      showError(errReason);
+      valid = false;
+    }
+
+    if (fileInput.files.length > 0 && !docTypeField.value) {
+      showError(errDocType);
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  /* ---- Submit ---- */
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<div class="lift-spinner" style="width:16px;height:16px;border-width:2px;"></div> Submitting…';
+
+    var formData = new FormData();
+    // IMPORTANT: documentType must be appended BEFORE the file
+    // so multer/busboy sees it when processing the file field.
+    if (fileInput.files.length > 0) {
+      formData.append("documentType", docTypeField.value);
+      formData.append("document", fileInput.files[0]);
+    }
+    formData.append("reason", reasonField.value.trim());
+    if (medicalField.value.trim()) {
+      formData.append("medicalCondition", medicalField.value.trim());
+    }
+
+    CecApi.apiFetchFormData("/lift-requests", formData)
+      .then(function (res) {
+        LiftUI.showToast("Lift request submitted successfully!", "success");
+        setTimeout(function () {
+          window.location.href = "/elevator/requests.html";
+        }, 1000);
+      })
+      .catch(function (err) {
+        var msg = (err && err.message) || "Failed to submit request. Please try again.";
+        showError(globalError, msg);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg> Submit Request';
+      });
+  });
+})();
+</script>
+</body>
+</html>

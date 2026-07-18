@@ -1,4 +1,4 @@
-# Smart Campus — CEC (College of Engineering Chengannur)
+# Minions — CEC (College of Engineering Chengannur)
 
 Monorepo containing the college website (frontend) and the Smart Campus API
 (backend, with the AI assistant bundled inside it).
