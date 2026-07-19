@@ -2,7 +2,7 @@
 
 > **Team Name:** Minions
 
-A unified Smart Campus platform for the **College of Engineering Chengannur (CEC)** that combines secure student authentication with an AI-powered campus assistant to improve the overall student experience.
+A unified Smart Campus platform for the **College of Engineering Chengannur (CEC)** that combines secure student authentication with an AI-powered campus assistant to improve the overall student experience ,an automated elevator access managment and an admin dashboard.
 
 ---
 
@@ -30,6 +30,8 @@ The AI assistant helps students with:
 - General college-related queries
 
 The backend uses a local **Gemma 4 e2b** large language model running through **Ollama**, allowing the chatbot to operate with institution-specific knowledge while keeping the architecture modular and privacy-friendly.
+
+The project also has a automated elevator access request system with an admin dashboard system.
 
 ---
 
