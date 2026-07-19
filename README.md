@@ -198,8 +198,6 @@ http://localhost:5500/elevator/
 http://localhost:5500/elevator/admin/
 ```
 
-> **Note:** The Elevator module is currently accessed directly via URL and is not linked from the public website navigation.
-
 for the dedicated Student Portal.
 
 ---
@@ -293,8 +291,6 @@ http://localhost:5500/elevator/
 ```
 http://localhost:5500/elevator/admin/
 ```
-
-> **Note:** The Elevator Management pages are currently intended for direct URL access during development and are not exposed through the public website navigation.
 
 > **Note:** This development admin override is ignored completely outside `NODE_ENV=development` and should **not** be configured in staging or production environments.
 
