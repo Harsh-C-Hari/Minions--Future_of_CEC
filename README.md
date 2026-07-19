@@ -105,7 +105,7 @@ The assistant uses prompt engineering, institution-specific knowledge files, and
 **Team:** Minions
 
 Repository:
-https://github.com/Jo-ohan/Minions-Future_of_CEC
+https://github.com/Harsh-C-Hari/Minions--Future_of_CEC.git
 
 ---
 
@@ -134,7 +134,7 @@ Demo video (maximum 3 minutes):
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Jo-ohan/Minions-Future_of_CEC.git
+git clone https://github.com/Harsh-C-Hari/Minions--Future_of_CEC.git
 cd Minions-Future_of_CEC
 ```
 
