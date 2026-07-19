@@ -125,7 +125,7 @@ Project screenshots will be included in the `/screenshots` directory.
 
 Demo video (maximum 3 minutes):
 
-**Link:** *(To be added)*
+**Link:** [Demo Video](https://drive.google.com/file/d/1lVgH14ve8W_hgdwbrinBGPWjiva9z8Cs/view?usp=sharing)
 
 ---
 
