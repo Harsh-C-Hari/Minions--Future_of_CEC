@@ -21,11 +21,26 @@ body{
   max-width:75ch;
 }
 
-/* Headings */
-.elementor-heading-title, .entry-title, .page-title, h1, h2, h3, h4, h5{
+/* Headings inside actual body content only - NOT every h1-h5 on the page,
+   which previously clobbered white titles on dark hero/footer backgrounds */
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5,
+.page-content h1, .page-content h2, .page-content h3, .page-content h4, .page-content h5,
+.elementor-heading-title, .entry-title, .page-title{
   font-family:var(--font-display) !important;
   color:var(--ink-900) !important;
   letter-spacing:-0.01em !important;
+}
+
+/* Safety net: keep titles legible wherever the design already puts them on a
+   dark background. Without this, the rule above (or legacy WP theme CSS)
+   can render a dark heading on a dark backdrop - effectively invisible. */
+.page-hero h1, .page-hero h2, .page-hero h3, .page-hero__inner h1,
+.stm-page-head h1, .stm-page-head h2, .stm-page-head h3,
+.stm-page-head__title, .stm-page-head__subtitle,
+.footer-col h4, .site-footer h1, .site-footer h2, .site-footer h3, .site-footer h4,
+.rev_slider_nav .title, .rev_slider_nav .sub__title{
+  color:var(--white) !important;
+  font-family:var(--font-display) !important;
 }
 
 /* Body copy area gets readable measure + generous top spacing */
@@ -171,8 +186,19 @@ table tbody tr:hover{background:var(--brass-100) !important;}
 }
 .page-numbers.current{background:var(--ink-900) !important; color:var(--white) !important; border-color:var(--ink-900) !important;}
 
+/* Legacy VC Tabs (teacher/admin bio pages) - ensure the tab bar keeps its
+   intended height and the panel content below it has clear spacing, so the
+   panel heading doesn't visually crowd the tab row above it */
+.vc_tta-tab > a{padding:.85rem 1.1rem !important; line-height:1.4 !important;}
+body .vc_tta-tabs.vc_tta-tabs_style-1.vc_tta-color-blue .vc_tta-tabs-container,
+body .vc_tta-tabs.vc_tta-tabs_style-2.vc_tta-color-blue .vc_tta-tabs-container{margin:0 0 1rem !important;}
+.vc_tta-panel-heading{padding-top:1rem !important; margin-bottom:.75rem !important;}
+.vc_tta-panel-heading{margin-bottom:.75rem !important;}
+.vc_tta-panel-body{padding-top:1rem !important;}
+
 /* Old top-bar leftovers from theme sometimes floating above header - hide safely */
 .stm-topbar, .top-bar{display:none !important;}
+
 
 /* Fallback shown in place of any image whose source file is missing
    (see assets/js/img-fallback.js). Uses existing tokens only. */

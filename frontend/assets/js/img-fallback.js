@@ -33,4 +33,20 @@
     },
     true
   );
+
+  // Catch images that already failed before this script (placed at the end
+  // of the page) got a chance to attach the listener above.
+  function sweepAlreadyBroken() {
+    var imgs = document.querySelectorAll("img");
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      if (img.complete && img.naturalWidth === 0 && img.src) {
+        handleError(img);
+      }
+    }
+  }
+  sweepAlreadyBroken();
+  if (document.readyState !== "complete") {
+    window.addEventListener("load", sweepAlreadyBroken);
+  }
 })();
