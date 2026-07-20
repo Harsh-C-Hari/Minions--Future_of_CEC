@@ -43,6 +43,13 @@
     });
   }
 
+  function formatTime(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+  }
+
   function formatRelative(iso) {
     if (!iso) return "";
     var d = new Date(iso);
@@ -240,6 +247,7 @@
     badge: badge,
     formatDate: formatDate,
     formatDateTime: formatDateTime,
+    formatTime: formatTime,
     formatRelative: formatRelative,
     startCountdown: startCountdown,
     showToast: showToast,

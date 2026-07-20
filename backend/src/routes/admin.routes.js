@@ -6,6 +6,7 @@ const { authenticate, authorize } = require('../middleware/auth.middleware');
 const {
   reviewRequestSchema,
   listRequestsQuerySchema,
+  requestIdParamSchema,
 } = require('../validations/liftRequest.validation');
 const { accessIdParamSchema, revokeAccessSchema } = require('../validations/liftAccess.validation');
 
@@ -16,6 +17,7 @@ const router = Router();
 router.use(authenticate, authorize('ADMIN'));
 
 router.get('/lift-requests', validate(listRequestsQuerySchema), liftRequestController.getAllRequests);
+router.get('/lift-requests/:id/document', validate(requestIdParamSchema), liftRequestController.downloadDocument);
 router.post('/lift-requests/:id/approve', validate(reviewRequestSchema), liftRequestController.approveRequest);
 router.post('/lift-requests/:id/reject', validate(reviewRequestSchema), liftRequestController.rejectRequest);
 

@@ -261,6 +261,9 @@
       html += '<span class="lift-detail__field-value" style="white-space:pre-wrap;">' + LiftUI.escapeHtml(req.medicalCondition) + '</span></div>';
     }
 
+    html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Requested Access</span>';
+    html += '<span class="lift-detail__field-value">' + LiftUI.formatDate(req.requestedExpiryAt) + '<br>' + LiftUI.formatTime(req.requestedExpiryAt) + '</span></div>';
+
     if (req.documentPath) {
       html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Document</span>';
       html += '<span class="lift-detail__field-value">';

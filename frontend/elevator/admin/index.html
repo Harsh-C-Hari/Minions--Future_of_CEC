@@ -109,6 +109,8 @@
             <p>Loading requests…</p>
           </div>
         </div>
+        <!-- Detail panel (shown inline when "View" is clicked) -->
+        <div id="request-detail" style="display:none;margin-top:1.5rem;"></div>
       </div>
 
       <!-- ===== Active access panel ===== -->
@@ -200,12 +202,15 @@
 
   var requestsContainer = document.getElementById("requests-container");
   var statusFilter = document.getElementById("requests-status-filter");
+  var detailPanel = document.getElementById("request-detail");
 
   statusFilter.addEventListener("change", loadRequests);
 
   function loadRequests() {
     loaded.requests = true;
     requestsContainer.innerHTML = '<div class="lift-loading"><div class="lift-spinner"></div><p>Loading requests…</p></div>';
+    detailPanel.style.display = "none";
+    detailPanel.innerHTML = "";
 
     var qs = statusFilter.value ? "?status=" + encodeURIComponent(statusFilter.value) : "";
 
@@ -241,6 +246,7 @@
       html += '<td>' + LiftUI.badge(req.status) + '</td>';
       html += '<td>' + LiftUI.formatDate(req.createdAt) + '</td>';
       html += '<td class="lift-table__actions">';
+      html += '<button type="button" class="lift-btn--outline lift-btn--sm btn-view">View</button>';
       if (req.status === "PENDING") {
         html += '<button type="button" class="btn btn-brass lift-btn--sm btn-approve">Approve</button>';
         html += '<button type="button" class="lift-btn--outline lift-btn--sm btn-reject">Reject</button>';
@@ -297,6 +303,115 @@
         );
       });
     });
+
+    requestsContainer.querySelectorAll(".btn-view").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.closest("tr").getAttribute("data-id");
+        loadRequestDetail(id);
+      });
+    });
+  }
+
+  function loadRequestDetail(id) {
+    detailPanel.style.display = "block";
+    detailPanel.innerHTML = '<div class="lift-loading"><div class="lift-spinner"></div><p>Loading details…</p></div>';
+    detailPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    CecApi.apiFetch("/lift-requests/" + id)
+      .then(function (res) {
+        renderRequestDetail(res.data);
+      })
+      .catch(function (err) {
+        LiftUI.handleApiError(err);
+        detailPanel.innerHTML = '<div class="cecp-error">Failed to load request details.</div>';
+      });
+  }
+
+  function renderRequestDetail(req) {
+    var html = '<div class="lift-detail">';
+    html += '<div class="lift-detail__header">';
+    html += '<h3 class="lift-detail__title">Request Details</h3>';
+    html += '<div style="display:flex;align-items:center;gap:.75rem;">';
+    html += LiftUI.badge(req.status);
+    html += '<button type="button" class="lift-btn--outline" style="font-size:.76rem;" id="btn-close-detail">Close</button>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="lift-detail__grid">';
+
+    if (req.student) {
+      html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Student</span>';
+      html += '<span class="lift-detail__field-value">' + LiftUI.escapeHtml(req.student.name) + ' &middot; ' + LiftUI.escapeHtml(req.student.email) + '</span></div>';
+    }
+
+    html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Submitted</span>';
+    html += '<span class="lift-detail__field-value">' + LiftUI.formatDateTime(req.createdAt) + '</span></div>';
+
+    html += '<div class="lift-detail__field" style="grid-column:1/-1;"><span class="lift-detail__field-label">Reason</span>';
+    html += '<span class="lift-detail__field-value" style="white-space:pre-wrap;">' + LiftUI.escapeHtml(req.reason) + '</span></div>';
+
+    if (req.medicalCondition) {
+      html += '<div class="lift-detail__field" style="grid-column:1/-1;"><span class="lift-detail__field-label">Medical Condition</span>';
+      html += '<span class="lift-detail__field-value" style="white-space:pre-wrap;">' + LiftUI.escapeHtml(req.medicalCondition) + '</span></div>';
+    }
+
+    html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Requested Access</span>';
+    html += '<span class="lift-detail__field-value">' + LiftUI.formatDate(req.requestedExpiryAt) + '<br>' + LiftUI.formatTime(req.requestedExpiryAt) + '</span></div>';
+
+    if (req.documentPath) {
+      html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Supporting Document</span>';
+      html += '<span class="lift-detail__field-value">';
+      html += '<button type="button" class="lift-btn--outline lift-btn--sm" id="btn-view-document">';
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg> ';
+      html += (req.documentType === "MEDICAL" ? "Open Medical Certificate" : "Open Supporting Document");
+      html += '</button>';
+      html += '</span></div>';
+    }
+
+    if (req.reviewedAt) {
+      html += '<div class="lift-detail__field"><span class="lift-detail__field-label">Reviewed On</span>';
+      html += '<span class="lift-detail__field-value">' + LiftUI.formatDateTime(req.reviewedAt) + '</span></div>';
+    }
+
+    if (req.remarks) {
+      html += '<div class="lift-detail__field" style="grid-column:1/-1;"><span class="lift-detail__field-label">Admin Remarks</span>';
+      html += '<div class="lift-request-card__remarks" style="margin-top:.25rem;">' + LiftUI.escapeHtml(req.remarks) + '</div></div>';
+    }
+
+    html += '</div>'; // grid
+    html += '</div>'; // detail
+
+    detailPanel.innerHTML = html;
+
+    document.getElementById("btn-close-detail").addEventListener("click", function () {
+      detailPanel.style.display = "none";
+      detailPanel.innerHTML = "";
+    });
+
+    var viewDocBtn = document.getElementById("btn-view-document");
+    if (viewDocBtn) {
+      viewDocBtn.addEventListener("click", function () {
+        // Open a blank tab synchronously (inside the click handler) so the
+        // browser doesn't treat the later navigation as a blocked popup —
+        // the actual URL is only known once the authenticated fetch below
+        // resolves the file as a blob.
+        var newTab = window.open("", "_blank");
+        viewDocBtn.disabled = true;
+        CecApi.apiFetchBlob("/admin/lift-requests/" + req.id + "/document")
+          .then(function (result) {
+            var url = URL.createObjectURL(result.blob);
+            if (newTab) newTab.location.href = url;
+            else window.open(url, "_blank");
+          })
+          .catch(function (err) {
+            if (newTab) newTab.close();
+            LiftUI.handleApiError(err);
+          })
+          .then(function () {
+            viewDocBtn.disabled = false;
+          });
+      });
+    }
   }
 
   /* ---- Active access tab ---- */
@@ -337,9 +452,11 @@
       html += '</td>';
       html += '<td>' + LiftUI.badge(a.status) + '</td>';
       html += '<td>' + (a.enrollment && a.enrollment.enrolled ? "Enrolled" : "Not enrolled") + '</td>';
-      html += '<td>' + LiftUI.formatDate(a.expiresAt) + '</td>';
+      html += '<td>' + LiftUI.formatDateTime(a.expiresAt) + '</td>';
       html += '<td class="lift-table__actions">';
-      html += '<button type="button" class="lift-btn--outline lift-btn--sm btn-regen">Regenerate PIN</button>';
+      if (a.hasPin && a.status === "ACTIVE" && !(a.enrollment && a.enrollment.enrolled)) {
+        html += '<button type="button" class="lift-btn--outline lift-btn--sm btn-regen">Regenerate PIN</button>';
+      }
       if (a.status === "ACTIVE") {
         html += '<button type="button" class="lift-btn--danger lift-btn--sm btn-revoke">Revoke</button>';
       }

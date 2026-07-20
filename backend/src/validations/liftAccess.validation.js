@@ -14,6 +14,14 @@ const enrollFingerprintSchema = z.object({
   params: z.object({}).optional(),
 });
 
+const verifyPinSchema = z.object({
+  body: z.object({
+    pin: z.string().min(1, 'pin is required').max(10, 'pin is too long'),
+  }),
+  query: z.object({}).optional(),
+  params: z.object({}).optional(),
+});
+
 const revokeAccessSchema = z.object({
   body: z.object({
     reason: z.string().max(500, 'reason is too long').optional(),
@@ -25,5 +33,6 @@ const revokeAccessSchema = z.object({
 module.exports = {
   accessIdParamSchema,
   enrollFingerprintSchema,
+  verifyPinSchema,
   revokeAccessSchema,
 };

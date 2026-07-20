@@ -7,6 +7,13 @@ const createLiftRequestSchema = z.object({
     // Only meaningful when a file is attached; determines which upload
     // subdirectory (medical/ or documents/) the file was written to.
     documentType: z.enum(['MEDICAL', 'SUPPORTING']).optional(),
+    // Requested elevator access expiry — sent as a single ISO datetime
+    // string (frontend combines the separate date + time inputs before
+    // submitting). Must be in the future; becomes LiftAccess.expiresAt
+    // once the request is approved.
+    requestedExpiryAt: z.coerce
+      .date({ errorMap: () => ({ message: 'Access expiry date and time are required' }) })
+      .refine((d) => d.getTime() > Date.now(), 'Access expiry must be in the future'),
   }),
   query: z.object({}).optional(),
   params: z.object({}).optional(),

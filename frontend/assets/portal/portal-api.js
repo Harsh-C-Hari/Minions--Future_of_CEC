@@ -147,6 +147,43 @@
       });
   }
 
+  /**
+   * Fetches a binary response (e.g. an uploaded document) with the same
+   * auth/refresh handling as apiFetch, but resolves to a Blob instead of
+   * parsing JSON. Used to open/download admin-only files that require an
+   * Authorization header, which a plain <a href> can't send.
+   */
+  function apiFetchBlob(path) {
+    var accessToken = getStored(STORAGE_KEYS.access);
+    var headers = {};
+    if (accessToken) headers.Authorization = "Bearer " + accessToken;
+
+    return fetch(API_BASE + path, { headers: headers }).then(function (res) {
+      if (res.status === 401 && getStored(STORAGE_KEYS.refresh)) {
+        return refreshTokens().then(function (ok) {
+          if (!ok) {
+            clearAuth();
+            throw new Error("Session expired. Please sign in again.");
+          }
+          var newToken = getStored(STORAGE_KEYS.access);
+          var h2 = {};
+          if (newToken) h2.Authorization = "Bearer " + newToken;
+          return fetch(API_BASE + path, { headers: h2 });
+        }).then(toBlobResult);
+      }
+      return toBlobResult(res);
+    });
+
+    function toBlobResult(res) {
+      if (!res.ok) {
+        var err = new Error("Failed to load the file.");
+        err.statusCode = res.status;
+        throw err;
+      }
+      return res.blob().then(function (blob) { return { blob: blob, response: res }; });
+    }
+  }
+
   /* ---- Auth helpers ---- */
 
   function getUser() {
@@ -215,6 +252,7 @@
     isAdmin: isAdmin,
     apiFetch: apiFetch,
     apiFetchFormData: apiFetchFormData,
+    apiFetchBlob: apiFetchBlob,
     logout: logout,
     requireAuth: requireAuth,
     requireAdmin: requireAdmin,

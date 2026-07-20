@@ -103,6 +103,21 @@
             <span class="lift-form__error" id="err-reason">Reason is required.</span>
           </div>
 
+          <!-- Access expiry -->
+          <div class="lift-form__group">
+            <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+              <div style="flex:1;min-width:160px;">
+                <label class="lift-form__label" for="field-expiry-date">Access expiry date <span style="color:var(--rose-600);">*</span></label>
+                <input class="lift-form__input" type="date" id="field-expiry-date" name="expiryDate" required style="margin-top:.4rem;" />
+              </div>
+              <div style="flex:1;min-width:140px;">
+                <label class="lift-form__label" for="field-expiry-time">Access expiry time <span style="color:var(--rose-600);">*</span></label>
+                <input class="lift-form__input" type="time" id="field-expiry-time" name="expiryTime" required style="margin-top:.4rem;" />
+              </div>
+            </div>
+            <span class="lift-form__error" id="err-expiry">Please choose a future access expiry date and time.</span>
+          </div>
+
           <!-- Medical condition -->
           <div class="lift-form__group">
             <label class="lift-form__label" for="field-medical">Medical condition <span style="color:var(--slate-400);font-weight:400;">(optional)</span></label>
@@ -207,6 +222,8 @@
   /* ---- DOM refs ---- */
   var form = document.getElementById("lift-request-form");
   var reasonField = document.getElementById("field-reason");
+  var expiryDateField = document.getElementById("field-expiry-date");
+  var expiryTimeField = document.getElementById("field-expiry-time");
   var medicalField = document.getElementById("field-medical");
   var fileInput = document.getElementById("field-document");
   var fileZone = document.getElementById("file-zone");
@@ -219,6 +236,9 @@
   var globalError = document.getElementById("form-global-error");
   var errReason = document.getElementById("err-reason");
   var errDocType = document.getElementById("err-doc-type");
+  var errExpiry = document.getElementById("err-expiry");
+
+  expiryDateField.min = new Date().toISOString().slice(0, 10);
 
   /* ---- File zone interaction ---- */
   fileZone.addEventListener("click", function () { fileInput.click(); });
@@ -288,14 +308,28 @@
     if (el.id === "form-global-error") el.style.display = "none";
   }
 
+  /** Combines the date + time inputs into one Date, or null if incomplete/invalid. */
+  function getRequestedExpiry() {
+    if (!expiryDateField.value || !expiryTimeField.value) return null;
+    var d = new Date(expiryDateField.value + "T" + expiryTimeField.value);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
   function validate() {
     var valid = true;
     hideError(errReason);
     hideError(errDocType);
+    hideError(errExpiry);
     hideError(globalError);
 
     if (!reasonField.value.trim()) {
       showError(errReason);
+      valid = false;
+    }
+
+    var expiry = getRequestedExpiry();
+    if (!expiry || expiry.getTime() <= Date.now()) {
+      showError(errExpiry);
       valid = false;
     }
 
@@ -323,6 +357,7 @@
       formData.append("document", fileInput.files[0]);
     }
     formData.append("reason", reasonField.value.trim());
+    formData.append("requestedExpiryAt", getRequestedExpiry().toISOString());
     if (medicalField.value.trim()) {
       formData.append("medicalCondition", medicalField.value.trim());
     }

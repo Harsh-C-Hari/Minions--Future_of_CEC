@@ -114,6 +114,13 @@ model LiftRequest {
   reason           String
   medicalCondition String?
 
+  // Requested elevator access expiry (date + time, combined client-side
+  // into a single timestamp). Copied onto LiftAccess.expiresAt when the
+  // request is approved — see liftRequest.service.js#approveRequest.
+  // Nullable to stay additive with any requests created before this field
+  // existed.
+  requestedExpiryAt DateTime?
+
   // Path is relative to the uploads root, e.g. "medical/<uuid>.pdf" or
   // "documents/<uuid>.pdf" — documentType determines which subdirectory
   // the file was written to at upload time.

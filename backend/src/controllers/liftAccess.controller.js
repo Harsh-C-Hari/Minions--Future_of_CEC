@@ -8,6 +8,12 @@ const sanitizeAccess = (a) => ({
   activatedAt: a.activatedAt,
   expiresAt: a.expiresAt,
   revokedAt: a.revokedAt,
+  // True once at least one PIN has ever been issued for this access
+  // (any status) — lets the admin UI tell "approved, no PIN generated
+  // yet" apart from "PIN generated, not yet enrolled". Only populated
+  // when the query included `pins` (see liftAccess.service.js#getAllActiveAccess);
+  // safely false elsewhere.
+  hasPin: Boolean(a.pins && a.pins.length > 0),
   enrollment: a.fingerprintEnrollment
     ? {
         enrolled: a.fingerprintEnrollment.enrolled,
@@ -37,6 +43,12 @@ const getOwnPin = asyncHandler(async (req, res) => {
 const generateOwnPin = asyncHandler(async (req, res) => {
   const pin = await liftAccessService.generateOwnPin(req.user.id);
   res.status(201).json(new ApiResponse(201, sanitizePin(pin), 'PIN generated'));
+});
+
+// POST /api/v1/lift-access/me/pin/verify
+const verifyOwnPin = asyncHandler(async (req, res) => {
+  await liftAccessService.verifyOwnPin(req.user.id, req.body.pin);
+  res.status(200).json(new ApiResponse(200, { valid: true }, 'PIN verified'));
 });
 
 // POST /api/v1/lift-access/me/fingerprint-enrollment
@@ -73,6 +85,7 @@ module.exports = {
   getOwnAccess,
   getOwnPin,
   generateOwnPin,
+  verifyOwnPin,
   enrollFingerprint,
   getActiveAccess,
   revokeAccess,

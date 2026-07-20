@@ -1,10 +1,34 @@
 const prisma = require('../prisma/client');
 const ApiError = require('../utils/ApiError');
 const notificationService = require('./notification.service');
+const { ensureLiftAccessFresh } = require('./expiry.service');
 
-const createLiftRequest = async (userId, { reason, medicalCondition, documentType, documentPath }) => {
+/**
+ * Eligibility check for rule: a student may submit a new request only when
+ * they do NOT currently have a pending request or active lift access.
+ * Everything else (expired PIN, no enrollment, rejected/expired history)
+ * is explicitly allowed and requires no check here.
+ */
+const assertEligibleForNewRequest = async (userId) => {
+  const pending = await prisma.liftRequest.findFirst({ where: { userId, status: 'PENDING' } });
+  if (pending) {
+    throw ApiError.conflict('You already have a pending lift request.');
+  }
+
+  // Freshly-evaluate the latest access so a row that expired but hasn't
+  // been touched since is not mistaken for still-active.
+  const latestAccess = await prisma.liftAccess.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' } });
+  const freshAccess = await ensureLiftAccessFresh(latestAccess);
+  if (freshAccess && freshAccess.status === 'ACTIVE') {
+    throw ApiError.conflict('You already have active lift access.');
+  }
+};
+
+const createLiftRequest = async (userId, { reason, medicalCondition, documentType, documentPath, requestedExpiryAt }) => {
+  await assertEligibleForNewRequest(userId);
+
   const request = await prisma.liftRequest.create({
-    data: { userId, reason, medicalCondition, documentType, documentPath },
+    data: { userId, reason, medicalCondition, documentType, documentPath, requestedExpiryAt },
   });
 
   await notificationService.notify(
@@ -51,6 +75,15 @@ const approveRequest = async (id, adminId, remarks) => {
   if (request.status !== 'PENDING') {
     throw ApiError.badRequest('Only pending requests can be approved');
   }
+  // The requested expiry was validated as "in the future" when the student
+  // submitted it, but time may have passed since then (pending requests can
+  // sit for a while) — re-check at approval time so we never create an
+  // already-expired LiftAccess.
+  if (request.requestedExpiryAt && request.requestedExpiryAt.getTime() <= Date.now()) {
+    throw ApiError.badRequest(
+      'The requested access expiry date/time has already passed. Ask the student to submit a new request.'
+    );
+  }
 
   const [updatedRequest, liftAccess] = await prisma.$transaction([
     prisma.liftRequest.update({
@@ -58,7 +91,13 @@ const approveRequest = async (id, adminId, remarks) => {
       data: { status: 'APPROVED', remarks, reviewedById: adminId, reviewedAt: new Date() },
     }),
     prisma.liftAccess.create({
-      data: { liftRequestId: id, userId: request.userId, status: 'ACTIVE', activatedAt: new Date() },
+      data: {
+        liftRequestId: id,
+        userId: request.userId,
+        status: 'ACTIVE',
+        activatedAt: new Date(),
+        expiresAt: request.requestedExpiryAt,
+      },
     }),
   ]);
 

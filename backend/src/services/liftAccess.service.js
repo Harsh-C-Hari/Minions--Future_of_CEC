@@ -7,6 +7,18 @@ const PIN_TTL_MS = 5 * 60 * 1000;
 
 const generatePinCode = () => String(Math.floor(1000 + Math.random() * 9000));
 
+/**
+ * Once fingerprint enrollment is complete for a lift access, no further
+ * PIN can ever be issued for it (student must submit a new lift request
+ * to get another). Shared by both the student's own PIN generation and
+ * the admin's regenerate-PIN action.
+ */
+const assertNotEnrolled = (access) => {
+  if (access.fingerprintEnrollment && access.fingerprintEnrollment.enrolled) {
+    throw ApiError.conflict('Fingerprint enrollment is already complete; no further PIN can be issued.');
+  }
+};
+
 const getOwnLiftAccess = async (userId) => {
   const access = await prisma.liftAccess.findFirst({
     where: { userId },
@@ -22,6 +34,24 @@ const getOwnActivePin = async (userId) => {
   if (!access) throw ApiError.notFound('No lift access found. Submit a lift request first.');
   if (access.status !== 'ACTIVE') throw ApiError.badRequest('Lift access is not active');
   return getFreshActivePin(access.id);
+};
+
+/**
+ * Verifies a PIN value (e.g. typed into the simulated fingerprint scanner)
+ * against the backend. Reuses getOwnActivePin as-is for PIN validity/expiry
+ * and lift access status — the same single source of truth already used to
+ * display the active PIN — so this only adds the equality check on top
+ * instead of duplicating any of that logic.
+ */
+const verifyOwnPin = async (userId, submittedPin) => {
+  const activePin = await getOwnActivePin(userId);
+  if (!activePin) {
+    throw ApiError.badRequest('Enrollment PIN expired. Generate a new PIN to continue.');
+  }
+  if (activePin.pin !== submittedPin) {
+    throw ApiError.badRequest('Incorrect PIN. Please try again.');
+  }
+  return true;
 };
 
 /**
@@ -70,6 +100,7 @@ const generateOwnPin = async (userId) => {
   const access = await getOwnLiftAccess(userId);
   if (!access) throw ApiError.notFound('No lift access found. Submit a lift request first.');
   if (access.status !== 'ACTIVE') throw ApiError.badRequest('Lift access is not active');
+  assertNotEnrolled(access);
   return generatePinForAccess(access);
 };
 
@@ -112,6 +143,11 @@ const getAllActiveAccess = async () => {
     include: {
       user: { select: { id: true, name: true, email: true } },
       fingerprintEnrollment: true,
+      // Only need to know whether *any* PIN was ever issued (regardless of
+      // status), so the admin UI can distinguish "approved, no PIN
+      // generated yet" from "PIN generated, not yet enrolled" — see
+      // sanitizeAccess's `hasPin` in liftAccess.controller.js.
+      pins: { select: { id: true }, take: 1 },
     },
     orderBy: { activatedAt: 'desc' },
   });
@@ -145,11 +181,15 @@ const revokeAccess = async (id, adminId, reason) => {
  * wait for natural expiry).
  */
 const regeneratePin = async (id) => {
-  const access = await prisma.liftAccess.findUnique({ where: { id } });
+  const access = await prisma.liftAccess.findUnique({
+    where: { id },
+    include: { fingerprintEnrollment: true },
+  });
   if (!access) throw ApiError.notFound('Lift access not found');
 
   const fresh = await ensureLiftAccessFresh(access);
   if (fresh.status !== 'ACTIVE') throw ApiError.badRequest('Lift access is not active');
+  assertNotEnrolled(access);
 
   await prisma.liftPin.updateMany({
     where: { liftAccessId: id, status: 'ACTIVE' },
@@ -162,6 +202,7 @@ const regeneratePin = async (id) => {
 module.exports = {
   getOwnLiftAccess,
   getOwnActivePin,
+  verifyOwnPin,
   generateOwnPin,
   enrollFingerprint,
   getAllActiveAccess,

@@ -31,7 +31,57 @@ The AI assistant helps students with:
 
 The backend uses a local **Gemma 4 e2b** large language model running through **Ollama**, allowing the chatbot to operate with institution-specific knowledge while keeping the architecture modular and privacy-friendly.
 
-The project also has a automated elevator access request system with an admin dashboard system.
+The platform also includes a complete **Lift Access Management System** for students requiring elevator access.
+
+Students can submit lift access requests with supporting documents and a requested access period. Administrators can review, approve, reject, or revoke requests through a dedicated dashboard.
+
+Approved students complete a secure fingerprint enrollment workflow using a one-time enrollment PIN (simulated in software), after which lift access remains active until its configured expiry time.
+
+---
+
+# Features
+
+## Smart Campus AI Assistant
+
+- Google OAuth authentication
+- AI-powered campus assistant using Gemma 4
+- College information and academic guidance
+- Programming and technical assistance
+- Institution-specific knowledge base
+- Local AI inference using Ollama
+
+## Lift Access Management
+
+### Student
+
+- Submit lift access requests
+- Medical condition and supporting document upload
+- Configure requested access expiry date & time
+- Track request history and status
+- Generate one-time enrollment PIN
+- Secure fingerprint enrollment workflow (simulation mode)
+- View lift access status, expiry and notifications
+
+### Administrator
+
+- Review pending requests
+- View supporting documents
+- Approve / Reject requests
+- Configure active lift access
+- Revoke lift access
+- Generate or regenerate enrollment PINs
+- Monitor active lift users
+- Automatic expiry handling
+
+---
+
+## Fingerprint Enrollment
+
+The current implementation simulates biometric enrollment entirely in software.
+
+Students receive a one-time enrollment PIN after approval. After successful PIN verification, fingerprint enrollment is simulated through the web interface to demonstrate the complete workflow without requiring biometric hardware.
+
+The architecture is designed so that the simulated enrollment step can later be replaced with real fingerprint hardware integration with minimal backend changes.
 
 ---
 
@@ -57,14 +107,14 @@ The project also has a automated elevator access request system with an admin da
 
 - HTML5
 - CSS3
-- JavaScript
+- Vanilla JavaScript
 
 ## Backend
 
 - Node.js
 - Express.js
-- Python
-- FastAPI
+- FastAPI (AI Service)
+- Prisma ORM
 
 ## Database
 
@@ -205,9 +255,13 @@ for the dedicated Student Portal.
 # Project Structure
 
 ```
-frontend/     Static college website + Student Portal + AI Chat
+frontend/     Static college website + Student Portal + AI Chat + Automated Elevator Access Request System
+├── assets/
+├── elevator/
+├── student-portal/
 backend/      Express API + Authentication + AI Proxy
-backend/
+├── src/
+├── prisma/
 └── ai-service/
     ├── FastAPI
     ├── Prompt System
@@ -239,6 +293,35 @@ Gemma 4 e2b
 ```
 
 The frontend never communicates directly with the AI service. All requests pass securely through the Express backend before being forwarded to the FastAPI service and finally to the locally hosted Gemma model.
+
+---
+
+# Lift Access Workflow
+
+```
+Student
+    │
+    ▼
+Submit Lift Request
+    │
+    ▼
+Admin Review
+    │
+    ▼
+Approve / Reject
+    │
+    ▼
+Generate Enrollment PIN
+    │
+    ▼
+Fingerprint Enrollment (Simulation)
+    │
+    ▼
+Lift Access Active
+    │
+    ▼
+Automatic Expiry / Revocation
+```
 
 ---
 
@@ -302,7 +385,11 @@ http://localhost:5500/elevator/admin/
 |------|-------------|
 | `frontend/index.html` | Redesigned homepage |
 | `frontend/student-portal/` | Student Portal |
+| `frontend/elevator/` | Lift Access Management module |
 | `frontend/assets/portal/` | Login widget and AI chat |
+| `backend/src/services/` | Business logic |
+| `backend/src/controllers/` | API controllers |
+| `backend/src/routes/` | Express routes |
 | `backend/src/` | Express API |
 | `backend/ai-service/` | FastAPI AI service |
 | `backend/src/prisma/schema.prisma` | PostgreSQL database schema |
