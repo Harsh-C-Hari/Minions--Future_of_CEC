@@ -185,7 +185,7 @@ Demo video (maximum 3 minutes):
 
 ```bash
 git clone https://github.com/Harsh-C-Hari/Minions--Future_of_CEC.git
-cd Minions-Future_of_CEC
+cd Minions--Future_of_CEC
 ```
 
 ## 2. Backend + AI Service
